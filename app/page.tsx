@@ -18,7 +18,7 @@ export default function Home() {
           <div className="mb-8 flex justify-center">
             <img
               src="/stealth-quest-header.svg"
-              alt="Stealth Quest - Experimentation Platform"
+              alt="Stealth Quest - Experimentation Agent"
               width={400}
               height={150}
               className="h-32 w-auto opacity-90"
@@ -33,7 +33,7 @@ export default function Home() {
 
           {/* Subtitle */}
           <p className="text-lg text-gray-600 mb-12 leading-relaxed">
-            Welcome to Stealth Quest - the only platform for your experimentation needs and to help you to ship your product with confidence and minimal outages
+            Welcome to Stealth Quest - the only agent for your experimentation needs and to help you to ship your product with confidence and minimal outages
           </p>
 
           {/* CTA Button */}
