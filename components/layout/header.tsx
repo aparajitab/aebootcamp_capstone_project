@@ -17,11 +17,11 @@ export default function Header() {
       <div className="border-b p-4 bg-white">
         <div className="flex items-center justify-between max-w-7xl mx-auto">
           {/* Left: Logo */}
-          <div className="flex items-center gap-3">
+          <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
             <div className="w-10 h-10 bg-[#001f3f] rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-sm">SQ</span>
             </div>
-          </div>
+          </Link>
 
           {/* Center: Navigation Links */}
           <div className="flex items-center gap-8">
@@ -32,10 +32,10 @@ export default function Header() {
               Home
             </Link>
             <Link
-              href="/dashboard"
+              href="/feature-flags"
               className="text-sm font-medium hover:text-blue-600 transition-colors"
             >
-              Dashboard
+              Feature Flags and Experiments Dashboard
             </Link>
             <Link
               href="/about"

@@ -37,12 +37,12 @@ export default function Support() {
       {/* Header */}
       <div className="border-b p-4 bg-white">
         <div className="flex items-center justify-between max-w-7xl mx-auto">
-          <div className="flex items-center gap-3">
+          <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
             <div className="w-10 h-10 bg-[#001f3f] rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-sm">SQ</span>
             </div>
             <h1 className="text-2xl font-bold text-[#001f3f]">Stealth Quest - Experimentation Agent</h1>
-          </div>
+          </Link>
 
           {/* Right Navigation Links */}
           <div className="flex items-center gap-6">
@@ -71,20 +71,14 @@ export default function Support() {
       {/* Submenu */}
       <div className="bg-gray-50 px-4 py-3 border-b">
         <div className="max-w-7xl mx-auto flex items-center gap-8">
-          <Link href="/dashboard" className="text-xs font-medium text-gray-700 hover:text-blue-600 transition-colors">
-            Feature Flags
-          </Link>
-          <Link href="/experiments" className="text-xs font-medium text-gray-700 hover:text-blue-600 transition-colors">
-            Experiments
+          <Link href="/feature-flags" className="text-xs font-medium text-gray-700 hover:text-blue-600 transition-colors">
+            Feature Flags and Experiments Dashboard
           </Link>
           <Link href="/faqs" className="text-xs font-medium text-gray-700 hover:text-blue-600 transition-colors">
             FAQs
           </Link>
           <Link href="/support" className="text-xs font-medium text-blue-600 font-bold">
             Support
-          </Link>
-          <Link href="#" className="text-xs font-medium text-gray-700 hover:text-blue-600 transition-colors">
-            Docs
           </Link>
           <div className="flex-1"></div>
           <Link
