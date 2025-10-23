@@ -3,21 +3,25 @@
 import Footer from "@/components/layout/footer";
 import Link from "next/link";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
-export default function FeatureFlags() {
+export default function FeatureFlagsAndExperiments() {
   const [showContactModal, setShowContactModal] = useState(false);
+  const [agentQuery, setAgentQuery] = useState("");
+  const [agentResponse, setAgentResponse] = useState("");
 
   return (
     <div className="h-screen bg-background flex flex-col overflow-hidden">
       {/* Header */}
       <div className="border-b p-4 bg-white">
         <div className="flex items-center justify-between max-w-7xl mx-auto">
-          <div className="flex items-center gap-3">
+          <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
             <div className="w-10 h-10 bg-[#001f3f] rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-sm">SQ</span>
             </div>
             <h1 className="text-2xl font-bold text-[#001f3f]">Stealth Quest - Experimentation Agent</h1>
-          </div>
+          </Link>
 
           {/* Right Navigation Links */}
           <div className="flex items-center gap-6">
@@ -46,11 +50,8 @@ export default function FeatureFlags() {
       {/* Submenu */}
       <div className="bg-gray-50 px-4 py-3 border-b">
         <div className="max-w-7xl mx-auto flex items-center gap-8">
-          <Link href="/dashboard" className="text-xs font-medium text-blue-600 font-bold">
-            Feature Flags
-          </Link>
-          <Link href="/experiments" className="text-xs font-medium text-gray-700 hover:text-blue-600 transition-colors">
-            Experiments
+          <Link href="/feature-flags" className="text-xs font-medium text-blue-600 font-bold">
+            Feature Flags and Experiments Dashboard
           </Link>
           <Link href="/faqs" className="text-xs font-medium text-gray-700 hover:text-blue-600 transition-colors">
             FAQs
@@ -68,57 +69,47 @@ export default function FeatureFlags() {
         </div>
       </div>
 
-      {/* Feature Flags Content */}
+      {/* Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         <div className="flex-1 overflow-y-auto">
           <div className="max-w-7xl mx-auto px-4 py-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">Feature Flags</h2>
-          <p className="text-gray-600 mb-8">Manage and monitor your feature flags powered by LaunchDarkly</p>
+            <h2 className="text-3xl font-bold text-gray-900 mb-2">Feature Flags and Experiments</h2>
+            <p className="text-gray-600 mb-8">Manage and monitor your feature flags and experiments powered by LaunchDarkly</p>
 
-          {/* Feature Flags Table */}
-          <div className="bg-white rounded-lg shadow overflow-hidden">
-            <table className="w-full">
-              <thead className="bg-gray-50 border-b">
-                <tr>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Flag Name</th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Type</th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Status</th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Maintainer</th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Last Updated</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y">
-                <tr className="hover:bg-gray-50">
-                  <td className="px-6 py-4 text-sm text-gray-900">New Dashboard UI</td>
-                  <td className="px-6 py-4 text-sm text-gray-600">Boolean</td>
-                  <td className="px-6 py-4 text-sm"><span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">Enabled</span></td>
-                  <td className="px-6 py-4 text-sm text-gray-600">John Smith</td>
-                  <td className="px-6 py-4 text-sm text-gray-600">2 days ago</td>
-                </tr>
-                <tr className="hover:bg-gray-50">
-                  <td className="px-6 py-4 text-sm text-gray-900">Dark Mode Support</td>
-                  <td className="px-6 py-4 text-sm text-gray-600">Boolean</td>
-                  <td className="px-6 py-4 text-sm"><span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">Targeting</span></td>
-                  <td className="px-6 py-4 text-sm text-gray-600">Jane Doe</td>
-                  <td className="px-6 py-4 text-sm text-gray-600">5 days ago</td>
-                </tr>
-                <tr className="hover:bg-gray-50">
-                  <td className="px-6 py-4 text-sm text-gray-900">Premium Features</td>
-                  <td className="px-6 py-4 text-sm text-gray-600">List</td>
-                  <td className="px-6 py-4 text-sm"><span className="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs font-medium">Expiring Soon</span></td>
-                  <td className="px-6 py-4 text-sm text-gray-600">Mike Johnson</td>
-                  <td className="px-6 py-4 text-sm text-gray-600">1 week ago</td>
-                </tr>
-                <tr className="hover:bg-gray-50">
-                  <td className="px-6 py-4 text-sm text-gray-900">Payment Integration v2</td>
-                  <td className="px-6 py-4 text-sm text-gray-600">String</td>
-                  <td className="px-6 py-4 text-sm"><span className="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-xs font-medium">Disabled</span></td>
-                  <td className="px-6 py-4 text-sm text-gray-600">Sarah Wilson</td>
-                  <td className="px-6 py-4 text-sm text-gray-600">3 weeks ago</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+            {/* Chat Agent Box */}
+            <div className="bg-white rounded-lg shadow p-6 mb-8">
+              <div className="flex flex-col gap-4">
+                <div>
+                  <label className="block text-sm font-semibold text-gray-900 mb-2">Ask me anything about Feature Flags and Experiments you have created</label>
+                  <div className="flex gap-2">
+                    <Input
+                      type="text"
+                      placeholder="Type your question here..."
+                      value={agentQuery}
+                      onChange={(e) => setAgentQuery(e.target.value)}
+                      className="flex-1"
+                    />
+                    <Button
+                      onClick={async () => {
+                        if (agentQuery.trim()) {
+                          // TODO: Integrate with LaunchDarkly APIs or MCP Server
+                          setAgentResponse("Processing your query...");
+                        }
+                      }}
+                      className="bg-[#001f3f] hover:bg-[#003366] text-white"
+                    >
+                      Ask
+                    </Button>
+                  </div>
+                </div>
+                {agentResponse && (
+                  <div className="mt-4 p-4 bg-gray-50 rounded border border-gray-200">
+                    <p className="text-sm text-gray-700">{agentResponse}</p>
+                  </div>
+                )}
+              </div>
+            </div>
+
           </div>
         </div>
 

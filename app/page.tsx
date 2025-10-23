@@ -4,6 +4,7 @@ import Footer from "@/components/layout/footer";
 import Header from "@/components/layout/header";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 export default function Home() {
   return (
@@ -13,6 +14,17 @@ export default function Home() {
       {/* Hero Section */}
       <div className="flex-1 flex items-center justify-center px-4">
         <div className="text-center max-w-3xl">
+          {/* Header Image */}
+          <div className="mb-8 flex justify-center">
+            <img
+              src="/stealth-quest-header.svg"
+              alt="Stealth Quest - Experimentation Platform"
+              width={400}
+              height={150}
+              className="h-32 w-auto opacity-90"
+            />
+          </div>
+
           {/* Main Title */}
           <h1 className="text-3xl md:text-4xl font-bold text-[#001f3f] mb-6">
             <div>Stealth Quest</div>
@@ -25,7 +37,7 @@ export default function Home() {
           </p>
 
           {/* CTA Button */}
-          <Link href="/dashboard">
+          <Link href="/feature-flags">
             <button className="px-8 py-3 bg-[#001f3f] text-white font-semibold rounded-lg hover:bg-[#003366] transition-colors duration-200">
               Lets Experiment
             </button>
