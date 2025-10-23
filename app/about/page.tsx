@@ -16,7 +16,7 @@ export default function About() {
           <section>
             <h2 className="text-2xl font-semibold mb-3">What is Stealth Quest?</h2>
             <p>
-              Stealth Quest is a comprehensive experimentation platform designed to help teams ship products with confidence. We provide powerful tools for feature flagging, A/B testing, and experimentation management that reduce outages and accelerate innovation.
+              Stealth Quest - Experimentation Agent is a comprehensive experimentation platform designed to help teams ship products with confidence. We provide powerful tools for feature flagging, A/B testing, and experimentation management that reduce outages and accelerate innovation.
             </p>
           </section>
 
@@ -42,7 +42,7 @@ export default function About() {
           <section>
             <h2 className="text-2xl font-semibold mb-3">Why Choose Stealth Quest?</h2>
             <p>
-              Unlike traditional experimentation platforms, Stealth Quest combines the power of feature flags with intelligent experimentation guidance. Our platform is built from the ground up to help you reduce outages, accelerate shipping, and make data-driven decisions with confidence.
+              Unlike traditional experimentation platforms, Stealth Quest - Experimentation Agent combines the power of feature flags with intelligent experimentation guidance. Our agent is built from the ground up to help you reduce outages, accelerate shipping, and make data-driven decisions with confidence.
             </p>
           </section>
         </div>
