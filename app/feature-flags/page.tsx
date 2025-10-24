@@ -92,7 +92,7 @@ export default function FeatureFlagsAndExperiments() {
                     <Button
                       onClick={async () => {
                         if (agentQuery.trim()) {
-                          // TODO: Integrate with LaunchDarkly APIs or MCP Server
+                          // TODO: Integrate with chat API for advanced queries
                           setAgentResponse("Processing your query...");
                         }
                       }}

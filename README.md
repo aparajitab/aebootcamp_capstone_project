@@ -66,3 +66,13 @@ Open [http://localhost:3000](http://localhost:3000) to chat with the Nodejs Secu
 Env: `OPENAI_API_KEY` (server-side) → used by AI SDK OpenAI client
 Errors: non-200 from API → UI shows fallback "Sorry, I encountered an error."
 ```
+
+# Integration with Vectorize RAG
+
+```bash
+   echo "VECTORIZE_ACCESS_TOKEN" > .env.local
+   echo "VECTORIZE_ENDPOINT" > .env.local
+   echo "VECTORIZE_ORG_ID" > .env.local
+   echo "VECTORIZE_PIPELINE_ID" .env.local
+ 
+```
