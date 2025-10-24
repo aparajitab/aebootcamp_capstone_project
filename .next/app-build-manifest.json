@@ -11,20 +11,30 @@
       "static/chunks/main-app.js",
       "static/chunks/app/page.js"
     ],
+    "/about/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/about/page.js"
+    ],
     "/feature-flags/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/feature-flags/page.js"
+    ],
+    "/api/launchdarkly/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/api/launchdarkly/route.js"
     ],
     "/faqs/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/faqs/page.js"
     ],
-    "/api/faq/route": [
+    "/support/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/api/faq/route.js"
+      "static/chunks/app/support/page.js"
     ]
   }
 }
