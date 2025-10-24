@@ -39,6 +39,12 @@ This is a TypeScript Next.js 15 starter template for AI-powered applications:
 - API route at `/api/chat` expects `{ message: string }` and returns `{ response: string }`
 - Requires `OPENAI_API_KEY` in `.env.local`
 
+### RAG Integration
+- Uses Vectorize for RAG Integration
+- Requires `VECTORIZE_ACCCESS_TOKEN` in `.env.local`
+- Requires `VECTORIZE_PIPELINE_ID` in `.env.local`
+- Requires `VECTORIZE_ORG_ID` in `.env.local`
+
 ### UI Components
 - **shadcn/ui** configured with:
   - New York style

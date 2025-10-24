@@ -1,4 +1,26 @@
+import { openai } from "@ai-sdk/openai";
+import { generateText } from "ai";
 import { NextRequest, NextResponse } from "next/server";
+
+const SUPPORT_SYSTEM_PROMPT = `You are a helpful support assistant for LaunchDarkly, an experimentation and feature management platform.
+
+You have knowledge about:
+1. LaunchDarkly SDKs and integration guides
+2. Feature flag setup and configuration
+3. Experiment creation and analysis
+4. User targeting and segmentation
+5. Troubleshooting common issues
+6. Best practices for using feature flags and experiments
+
+When answering questions:
+- First check if you have specific knowledge about LaunchDarkly support topics
+- If the question is about general platform features or troubleshooting, use web search to find current information
+- Provide step-by-step guidance when helpful
+- Include relevant documentation links
+- If you're unsure, search the web for the most current information
+- Cite sources when you use web search
+
+Always provide supportive, actionable advice to help users succeed.`;
 
 export async function POST(request: NextRequest) {
   try {
@@ -8,13 +30,27 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ response: "Please provide a question." }, { status: 400 });
     }
 
-    // This is a placeholder for RAG integration with LaunchDarkly
-    // In a real implementation, this would:
-    // 1. Query LaunchDarkly documentation or knowledge base
-    // 2. Use RAG (Retrieval Augmented Generation) to find relevant information
-    // 3. Pass that context to an LLM to generate answers
-
+    // First try to provide an answer using the mock knowledge base
     const mockResponse = generateMockSupportResponse(question);
+
+    // For questions not covered by the mock knowledge base, use web search
+    if (mockResponse.includes("I don't have specific information") || mockResponse.includes("don't have specific information")) {
+      const result = await generateText({
+        model: openai("gpt-5"),
+        system: SUPPORT_SYSTEM_PROMPT,
+        prompt: question,
+        tools: {
+          web_search: openai.tools.webSearch({
+            searchContextSize: "low",
+          }),
+        },
+      });
+
+      return NextResponse.json({
+        response: result.text,
+        sources: result.sources || [],
+      });
+    }
 
     return NextResponse.json({ response: mockResponse });
   } catch (error) {

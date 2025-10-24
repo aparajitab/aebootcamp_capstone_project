@@ -1460,9 +1460,6 @@
     --tw-enter-scale: calc(95*1%);
     --tw-enter-scale: .95;
   }
-  .running {
-    animation-play-state: running;
-  }
   .slide-in-from-top-2 {
     --tw-enter-translate-y: calc(2*var(--spacing)*-1);
   }
