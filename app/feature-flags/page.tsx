@@ -2,7 +2,7 @@
 
 import Footer from "@/components/layout/footer";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -10,6 +10,35 @@ export default function FeatureFlagsAndExperiments() {
   const [showContactModal, setShowContactModal] = useState(false);
   const [agentQuery, setAgentQuery] = useState("");
   const [agentResponse, setAgentResponse] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [mcpConnected, setMcpConnected] = useState<boolean | null>(null);
+  const [projectKey, setProjectKey] = useState("default");
+  const [environment, setEnvironment] = useState<string>("");
+
+  // Check MCP connection on component mount
+  useEffect(() => {
+    checkMCPConnection();
+  }, []);
+
+  const checkMCPConnection = async () => {
+    try {
+      const response = await fetch("/api/launchdarkly", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "check-connection" }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setMcpConnected(data.connected);
+      } else {
+        setMcpConnected(false);
+      }
+    } catch (error) {
+      console.error("Failed to check MCP connection:", error);
+      setMcpConnected(false);
+    }
+  };
 
   return (
     <div className="h-screen bg-background flex flex-col overflow-hidden">
@@ -76,11 +105,67 @@ export default function FeatureFlagsAndExperiments() {
             <h2 className="text-3xl font-bold text-gray-900 mb-2">Feature Flags and Experiments</h2>
             <p className="text-gray-600 mb-8">Manage and monitor your feature flags and experiments powered by LaunchDarkly</p>
 
+            {/* MCP Connection Status */}
+            {mcpConnected !== null && (
+              <div
+                className={`mb-6 p-4 rounded-lg border ${
+                  mcpConnected
+                    ? "bg-green-50 border-green-200"
+                    : "bg-red-50 border-red-200"
+                }`}
+              >
+                <p
+                  className={`text-sm font-medium ${
+                    mcpConnected
+                      ? "text-green-800"
+                      : "text-red-800"
+                  }`}
+                >
+                  {mcpConnected
+                    ? "✓ Connected to LaunchDarkly MCP Server"
+                    : "✗ Unable to connect to LaunchDarkly MCP Server"}
+                </p>
+              </div>
+            )}
+
             {/* Chat Agent Box */}
             <div className="bg-white rounded-lg shadow p-6 mb-8">
               <div className="flex flex-col gap-4">
+                {/* Configuration Section */}
+                <div className="grid grid-cols-2 gap-4 pb-4 border-b">
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-900 mb-2">
+                      Project Key
+                    </label>
+                    <Input
+                      type="text"
+                      placeholder="e.g., default"
+                      value={projectKey}
+                      onChange={(e) => setProjectKey(e.target.value)}
+                      className="w-full"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-900 mb-2">
+                      Environment (Optional)
+                    </label>
+                    <Input
+                      type="text"
+                      placeholder="e.g., production"
+                      value={environment}
+                      onChange={(e) => setEnvironment(e.target.value)}
+                      className="w-full"
+                    />
+                  </div>
+                </div>
+
                 <div>
-                  <label className="block text-sm font-semibold text-gray-900 mb-2">Ask me anything about Feature Flags and Experiments you have created</label>
+                  <label className="block text-sm font-semibold text-gray-900 mb-2">
+                    Ask me anything about Feature Flags and Experiments
+                  </label>
+                  <p className="text-xs text-gray-500 mb-3">
+                    Try: "List all flags", "Get experiments", "Code references for flag:my-flag"
+                  </p>
                   <div className="flex gap-2">
                     <Input
                       type="text"
@@ -92,19 +177,95 @@ export default function FeatureFlagsAndExperiments() {
                     <Button
                       onClick={async () => {
                         if (agentQuery.trim()) {
-                          // TODO: Integrate with chat API for advanced queries
-                          setAgentResponse("Processing your query...");
+                          setIsLoading(true);
+                          setAgentResponse("");
+
+                          try {
+                            // Determine the action based on the query
+                            let action = "list-flags";
+                            const query = agentQuery.toLowerCase();
+
+                            if (
+                              query.includes("experiment") ||
+                              query.includes("entit")
+                            ) {
+                              action = "fetch-entities";
+                            } else if (
+                              query.includes("code") ||
+                              query.includes("reference")
+                            ) {
+                              action = "get-code-refs";
+                            }
+
+                            const requestBody: any = { action, projectKey };
+
+                            if (
+                              action === "list-flags" &&
+                              environment
+                            ) {
+                              requestBody.environment = environment;
+                            }
+
+                            if (
+                              action === "get-code-refs" &&
+                              query.includes("flag:")
+                            ) {
+                              const flagMatch = query.match(
+                                /flag:(\w+)/
+                              );
+                              if (flagMatch) {
+                                requestBody.flagKey = flagMatch[1];
+                              }
+                            }
+
+                            const response = await fetch(
+                              "/api/launchdarkly",
+                              {
+                                method: "POST",
+                                headers: {
+                                  "Content-Type": "application/json",
+                                },
+                                body: JSON.stringify(requestBody),
+                              }
+                            );
+
+                            if (response.ok) {
+                              const data = await response.json();
+                              const dataStr =
+                                typeof data.data === "string"
+                                  ? data.data
+                                  : JSON.stringify(data.data, null, 2);
+                              setAgentResponse(dataStr);
+                            } else {
+                              const error = await response.json();
+                              setAgentResponse(
+                                `Error: ${error.error || "Failed to fetch data"}`
+                              );
+                            }
+                          } catch (error) {
+                            setAgentResponse(
+                              `Error: ${error instanceof Error ? error.message : "An unexpected error occurred"}`
+                            );
+                          } finally {
+                            setIsLoading(false);
+                          }
                         }
                       }}
-                      className="bg-[#001f3f] hover:bg-[#003366] text-white"
+                      disabled={isLoading || !mcpConnected}
+                      className="bg-[#001f3f] hover:bg-[#003366] text-white disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      Ask
+                      {isLoading ? "Loading..." : mcpConnected === false ? "MCP Offline" : "Ask"}
                     </Button>
                   </div>
                 </div>
                 {agentResponse && (
-                  <div className="mt-4 p-4 bg-gray-50 rounded border border-gray-200">
-                    <p className="text-sm text-gray-700">{agentResponse}</p>
+                  <div className="mt-4 p-4 bg-blue-50 rounded border border-blue-200">
+                    <p className="text-sm font-semibold text-blue-900 mb-2">
+                      Response from LaunchDarkly MCP Server:
+                    </p>
+                    <pre className="text-xs text-blue-800 overflow-auto max-h-64 bg-white p-2 rounded border border-blue-100">
+                      {agentResponse}
+                    </pre>
                   </div>
                 )}
               </div>

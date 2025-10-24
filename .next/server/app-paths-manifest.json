@@ -1,6 +1,1 @@
-{
-  "/api/faq/route": "app/api/faq/route.js",
-  "/page": "app/page.js",
-  "/feature-flags/page": "app/feature-flags/page.js",
-  "/faqs/page": "app/faqs/page.js"
-}
+{}
